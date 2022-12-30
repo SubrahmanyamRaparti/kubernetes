@@ -1,0 +1,10 @@
+# Metrics Server
+wget https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+# Modify and add "- --kubelet-insecure-tls" in deployment.spec.template.spec.containers.args
+
+# Commands
+kubectl top nodes
+kubectl top pods
+
+kubectl logs -f <pod name> <container name>
