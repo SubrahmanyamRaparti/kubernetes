@@ -1,0 +1,18 @@
+# $ kubectl create -o yaml --dry-run=client namespace production > namespace.yaml
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: production
+spec: {}
+status: {}
+
+# $ kubectl get namespaces
+# $ kubectl get namespaces production -o yaml
+# $ kubectl delete namespaces production
+# $ kubectl apply -f namespace.yaml
+# $ kubectl delete -f namespace.yaml
+# $ kubectl describe namespaces production
+
+# $ kubectl config --namespace production set-context $(kubectl config current-context)

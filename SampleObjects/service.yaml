@@ -1,0 +1,27 @@
+# $ kubectl create service nodeport proxy --namespace default --tcp 80 -o yaml --dry-run=client > service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: proxy
+  name: proxy
+  namespace: default
+spec:
+  ports:
+  - name: "80"
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: proxy
+  type: NodePort
+status:
+  loadBalancer: {}
+
+# $ kubectl get services
+# $ kubectl get services proxy -o yaml
+# $ kubectl delete services proxy
+# $ kubectl apply -f service.yaml
+# $ kubectl delete -f service.yaml
+# $ kubectl describe services proxy

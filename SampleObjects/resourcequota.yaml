@@ -1,0 +1,26 @@
+# $  kubectl create quota development --hard=cpu=1,memory=1G,pods=2,services=3,replicationcontrollers=2,resourcequotas=1,secrets=5,persistentvolumeclaims=10 -o yaml --dry-run=client > resourcequota.yaml
+
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  creationTimestamp: null
+  name: development
+  namespace: default
+spec:
+  hard:
+    cpu: "1"
+    memory: 1G
+    persistentvolumeclaims: "10"
+    pods: "2"
+    replicationcontrollers: "2"
+    resourcequotas: "1"
+    secrets: "5"
+    services: "3"
+status: {}
+
+# $ kubectl get resourcequotas
+# $ kubectl get resourcequotas development -o yaml
+# $ kubectl delete resourcequotas development
+# $ kubectl apply -f resourcequota.yaml
+# $ kubectl delete -f resourcequota.yaml
+# $ kubectl describe resourcequotas development

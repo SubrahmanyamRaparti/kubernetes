@@ -1,0 +1,25 @@
+# $ kubectl run proxy --image nginx --labels app=proxy -o yaml --dry-run=client --namespace default > pod.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    app: proxy
+  name: proxy
+  namespace: default
+spec:
+  containers:
+  - image: nginx
+    name: proxy
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+# $ kubectl get pods
+# $ kubectl get pods proxy -o yaml
+# $ kubectl delete pods proxy
+# $ kubectl apply -f pod.yaml
+# $ kubectl delete -f pod.yaml
+# $ kubectl describe pods proxy

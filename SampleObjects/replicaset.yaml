@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  creationTimestamp: null
+  labels:
+    app: proxy
+  name: proxy
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: proxy
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: proxy
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        resources: {}
+status: {}
+
+# $ kubectl get replicasets.apps
+# $ kubectl get replicasets.apps proxy -o yaml
+# $ kubectl delete replicasets.apps proxy
+# $ kubectl apply -f replicaset.yaml
+# $ kubectl delete -f replicaset.yaml
+# $ kubectl describe replicasets.apps proxy

@@ -1,0 +1,42 @@
+# $ kubectl create deployment --namespace default --image nginx proxy --replicas 3 -o yaml --dry-run=client > deployment.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: proxy
+  name: proxy
+  namespace: default
+  annotations:
+    authorname: Subrahmanyam
+    team: Deployment & Orchestration
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: proxy
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: proxy
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        resources: {}
+      tolerations:
+      - key: "app"
+        operator: "Equal"
+        value: "proxy"
+        effect: "NoSchedule"
+status: {}
+
+# $ kubectl get deployments
+# $ kubectl get deployments proxy -o yaml
+# $ kubectl delete deployments proxy
+# $ kubectl apply -f deployment.yaml
+# $ kubectl delete -f deployment.yaml
+# $ kubectl describe deployments proxy
