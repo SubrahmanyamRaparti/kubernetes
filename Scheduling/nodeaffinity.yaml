@@ -1,0 +1,46 @@
+# requiredDuringSchedulingIgnoredDuringExecution: The scheduler can't schedule the Pod unless the rule is met. 
+# This functions like nodeSelector, but with a more expressive syntax.
+
+# preferredDuringSchedulingIgnoredDuringExecution: The scheduler tries to find a node that meets the rule. 
+# If a matching node is not available, the scheduler still schedules the Pod.
+
+# Node affinity rules use labels on nodes and label selectors in the pod specification file. Nodes don’t have 
+# control over the placement. If the scheduler places a pod using the node affinity rule and the rule is no longer
+# valid later (e.g., due to a change of labels), the pod will continue to run on that node.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jenkins
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/os
+            operator: In
+            values:
+            - linux
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: label-1
+            operator: In
+            values:
+            - key-1
+      - weight: 50
+        preference:
+          matchExpressions:
+          - key: label-2
+            operator: In
+            values:
+            - key-2
+  containers:
+  - name: jenkins
+    image: registry.hub.docker.com/jenkins/jenkins:lts
+    
+# If there are two possible nodes that match the preferredDuringSchedulingIgnoredDuringExecution rule, one with the label-1:key-1 label
+# and another with the label-2:key-2 label, the scheduler considers the weight of each node and adds the weight to the other scores for 
+# that node, and schedules the Pod onto the node with the highest final score.

@@ -1,0 +1,85 @@
+# Let's assume we have three nodes and we have a Redis cache for web applications and we need to run two replicas
+# of Redis but we need to make sure that each replica runs on a different node, we make use of pod anti-affinity here.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: cachedb
+  name: cachedb
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: redis
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: redis
+    spec:
+      containers:
+      - image: redis:6-alpine
+        name: redis
+        resources: {}
+      affinity:
+         podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values: 
+                  - redis
+              topologyKey: "kubernetes.io/hostname"
+status: {}
+
+# Next, let’s assume we have a web server running and we need to make sure that each web server pod co-locates 
+# with each Redis cache pod, but at the same time, we need to make sure two web server pods don’t run on the same node, 
+# for this to happen we make use of pod affinity and pod anti-affinity both as below.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: webserver
+  name: webserver
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tomcat
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: tomcat
+    spec:
+      containers:
+      - image: tomcat:8
+        name: tomcat
+        resources: {}
+      affinity:
+        podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values: 
+                  - tomcat
+              topologyKey: "kubernetes.io/hostname"
+        podAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values: 
+                  - redis
+              topologyKey: "kubernetes.io/hostname"
+status: {}

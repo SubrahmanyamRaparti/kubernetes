@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: jenkins
+  name: jenkins
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: jenkins
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: jenkins
+    spec:
+      containers:
+      - image: registry.hub.docker.com/jenkins/jenkins:lts
+        name: jenkins
+        resources:
+          requests:
+            cpu: 0.3
+            memory: "256Mi"
+          limits:
+            cpu: 1
+            memory: "1Gi"
+status: {}
+
+# Need to check on LimitRange & ResourceQuota
