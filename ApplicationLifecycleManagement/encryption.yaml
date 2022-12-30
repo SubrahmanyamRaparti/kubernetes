@@ -1,0 +1,18 @@
+apiVersion: apiserver.config.k8s.io/v1
+kind: EncryptionConfiguration
+resources:
+  - resources:
+    - secrets
+    providers:
+    - secretbox:
+        keys:
+        - name: secretbox-encrytion-key
+          secret: 21iDxPniMU5qytk1oL8lzqOqm4BQ5EFUKsAXCpxnbBs=
+    - identity: {}
+
+
+# Set the --encryption-provider-config flag on the kube-apiserver to point to the location of the config file.
+# You will need to mount the new encryption config file to the kube-apiserver static pod.
+
+# Save the new encryption config file to /etc/kubernetes/enc/enc.yaml on the control-plane node.
+# Edit the manifest for the kube-apiserver static pod: /etc/kubernetes/manifests/kube-apiserver.yaml

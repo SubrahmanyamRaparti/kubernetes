@@ -1,0 +1,9 @@
+kubectl rollout status deployment/proxy
+
+kubectl rollout history deployment/proxy
+
+kubectl rollout undo deployment/proxy
+
+# Deployment Strategy:
+# - Recreate
+# - Rolling update (Default)

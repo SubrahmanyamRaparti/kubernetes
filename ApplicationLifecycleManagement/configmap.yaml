@@ -1,0 +1,9 @@
+# kubectl create configmap postgress-passkey --from-literal=POSTGRES_USER=postgres --dry-run=client -o yaml > configmap.yaml
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: postgress-username
+data:
+  POSTGRES_USER: postgres

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: sleep
+  name: sleep
+spec:
+  containers:
+  - command:            # In dockerfile it is referred to ENTRYPOINT
+    - sleep
+    args:               # In dockerfile it is referred to CMD
+    - "5"
+    image: ubuntu
+    name: sleep
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

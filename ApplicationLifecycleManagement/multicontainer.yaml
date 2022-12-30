@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: multicontainer
+  name: multicontainer
+spec:
+  containers:
+  - image: busybox
+    name: sleep
+    command:
+    - sleep
+    args:
+    - "1000"
+    resources: {}
+  - image: nginx
+    name: proxy
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
