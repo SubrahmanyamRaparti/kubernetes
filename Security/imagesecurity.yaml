@@ -1,0 +1,32 @@
+# For docker image secrets we use "docker-registry" under secret resource.
+
+# $ kubectl create secret docker-registry private-reg-cred --docker-username=dock_user --docker-password=dock_password --docker-server=myprivateregistry.com:5000 --docker-email=dock_user@myprivateregistry.com -o yaml --dry-run=client
+
+apiVersion: v1
+data:
+  .dockerconfigjson: eyJhdXRocyI6eyJteXByaXZhdGVyZWdpc3RyeS5jb206NTAwMCI6eyJ1c2VybmFtZSI6ImRvY2tfdXNlciIsInBhc3N3b3JkIjoiZG9ja19wYXNzd29yZCIsImVtYWlsIjoiZG9ja191c2VyQG15cHJpdmF0ZXJlZ2lzdHJ5LmNvbSIsImF1dGgiOiJaRzlqYTE5MWMyVnlPbVJ2WTJ0ZmNHRnpjM2R2Y21RPSJ9fX0=
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: private-reg-cred
+type: kubernetes.io/dockerconfigjson
+
+# $ kubectl run proxy --image myprivateregistry.com:5000/nginx -o yaml --dry-run=client
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: proxy
+  name: proxy
+spec:
+  containers:
+  - image: myprivateregistry.com:5000/nginx
+    name: proxy
+    resources: {}
+  imagePullSecrets:
+  - name: private-reg-cred
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
